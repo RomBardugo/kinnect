@@ -96,16 +96,48 @@ dialog p{margin:4px 0 18px;font-size:15px}
 .choice.wa{background:var(--wa);color:#fff}
 .close{position:absolute;top:10px;left:12px;background:none;border:0;font-size:26px;line-height:1;color:var(--muted);cursor:pointer;padding:6px}
 
+/* Phone: the whole page fits in one screen, no scrolling */
 @media (max-width:640px){
-  .logo{width:110px}
-  .chip{font-size:13px;padding:6px 12px;margin-top:16px}
-  .sun{width:170px;height:170px;top:-70px;left:-70px}
-  .people{grid-template-columns:1fr;gap:4px}
-  .star{margin:0 auto;width:34px;height:34px}
-  .goals{grid-template-columns:1fr;max-width:300px}
-  .goals li{display:flex;align-items:center;gap:10px;text-align:right;padding:12px 16px}
-  .goals svg{margin:0}
-  .bar-label{width:100%;text-align:center;font-size:14px}
+  body{min-height:100vh;min-height:100svh;display:flex;flex-direction:column}
+  .page{flex:1;display:flex;flex-direction:column}
+  .wrap{flex:1;display:flex;flex-direction:column;width:100%;padding:0 14px}
+  main{flex:1;display:flex;flex-direction:column;justify-content:space-evenly;gap:6px;padding:4px 0 10px}
+  header{padding-top:8px;align-items:center}
+  .logo{width:clamp(62px,9.5svh,90px)}
+  .chip{font-size:12px;padding:5px 11px;margin-top:0}
+  .chip svg{width:15px;height:15px}
+  .sun{width:130px;height:130px;top:-62px;left:-62px}
+
+  .hero{padding:0}
+  .hero h1{font-size:clamp(28px,5svh,38px)}
+  .tagline{font-size:clamp(14px,2.2svh,17px);margin-top:2px;line-height:1.5}
+  .team{margin-top:clamp(6px,1.6svh,16px)}
+  .team-title{font-size:13px;margin-bottom:4px}
+  .people{grid-template-columns:1fr 1fr;gap:8px}
+  .star{display:none}
+  .person{background:rgba(255,255,255,.65);padding:8px 6px;border-radius:16px}
+  .person .name{font-size:clamp(15px,2.4svh,19px)}
+  .person .role{font-size:12px;margin-top:3px;line-height:1.5}
+  .person .cta{font-size:12px;margin-top:4px}
+
+  .doodle,.goals,.place,.credit,.invite p,.lead p.sub{display:none}
+  .invite{margin-top:clamp(6px,1.6svh,16px)}
+  .invite h2{font-size:clamp(14px,2.2svh,17px);line-height:1.45}
+
+  .lead{margin:0;padding:12px 12px 10px;border-radius:18px;max-width:none}
+  .lead h2{font-size:17px;margin-bottom:8px}
+  .lead form{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .lead label{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+  .lead input,.lead select{padding:9px 11px;font-size:16px;border-radius:10px}
+  .err{font-size:11px;margin-top:1px}
+  .err:empty{display:none}
+  .lead .btn{margin-top:0;font-size:16px;padding:9px;border-radius:10px}
+  .form-msg{grid-column:1/-1;margin-top:0;font-size:13px}
+  .form-msg:empty{display:none}
+
+  footer.bar{position:static;margin-top:0;padding:10px 12px calc(10px + env(safe-area-inset-bottom))}
+  .bar-inner{flex-wrap:nowrap;gap:8px}
+  .bar-label{font-size:13px;white-space:nowrap}
   .contact-btn{padding:9px 16px;font-size:15px}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
@@ -176,18 +208,24 @@ dialog p{margin:4px 0 18px;font-size:15px}
       <p class="sub">שיחת היכרות ראשונה, בלי התחייבות</p>
       <form id="leadForm" novalidate>
         <input type="text" name="_honey" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
-        <label for="fname">שם מלא</label>
-        <input id="fname" name="שם" type="text" autocomplete="name" placeholder="ישראל ישראלי" required>
-        <div class="err" id="fname-err"></div>
-        <label for="fphone">טלפון</label>
-        <input id="fphone" name="טלפון" type="tel" inputmode="tel" autocomplete="tel" placeholder="050-0000000" required>
-        <div class="err" id="fphone-err"></div>
-        <label for="fpref">איך נוח לכם להיפגש?</label>
-        <select id="fpref" name="סוג מפגש">
-          <option>פגישה בכפר סבא</option>
-          <option>מפגש בזום</option>
-          <option>עוד לא בטוח/ה</option>
-        </select>
+        <div class="field">
+          <label for="fname">שם מלא</label>
+          <input id="fname" name="שם" type="text" autocomplete="name" placeholder="שם מלא" required>
+          <div class="err" id="fname-err"></div>
+        </div>
+        <div class="field">
+          <label for="fphone">טלפון</label>
+          <input id="fphone" name="טלפון" type="tel" inputmode="tel" autocomplete="tel" placeholder="מספר טלפון" required>
+          <div class="err" id="fphone-err"></div>
+        </div>
+        <div class="field">
+          <label for="fpref">איך נוח לכם להיפגש?</label>
+          <select id="fpref" name="סוג מפגש">
+            <option>בכפר סבא</option>
+            <option>בזום</option>
+            <option>עוד לא בטוח/ה</option>
+          </select>
+        </div>
         <button class="btn" type="submit" id="submitBtn">חזרו אליי</button>
         <div class="form-msg" id="formMsg" role="status" aria-live="polite"></div>
       </form>
