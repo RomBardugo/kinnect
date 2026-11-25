@@ -131,7 +131,7 @@ dialog p{margin:4px 0 18px;font-size:15px}
   .lead input,.lead select{padding:9px 11px;font-size:16px;border-radius:10px}
   .err{font-size:11px;margin-top:1px}
   .err:empty{display:none}
-  .lead .btn{margin-top:0;font-size:16px;padding:9px;border-radius:10px}
+  .lead .btn{grid-column:1/-1;margin-top:0;font-size:16px;padding:9px;border-radius:10px}
   .form-msg{grid-column:1/-1;margin-top:0;font-size:13px}
   .form-msg:empty{display:none}
 
@@ -213,11 +213,6 @@ dialog p{margin:4px 0 18px;font-size:15px}
           <div class="err" id="fname-err"></div>
         </div>
         <div class="field">
-          <label for="fphone">טלפון</label>
-          <input id="fphone" name="טלפון" type="tel" inputmode="tel" autocomplete="tel" placeholder="מספר טלפון" required>
-          <div class="err" id="fphone-err"></div>
-        </div>
-        <div class="field">
           <label for="fpref">איך נוח לכם להיפגש?</label>
           <select id="fpref" name="סוג מפגש">
             <option>בכפר סבא</option>
@@ -292,7 +287,6 @@ dialog p{margin:4px 0 18px;font-size:15px}
 
   var form = document.getElementById('leadForm');
   var nameI = document.getElementById('fname');
-  var phoneI = document.getElementById('fphone');
   var msg = document.getElementById('formMsg');
   var btn = document.getElementById('submitBtn');
 
@@ -300,19 +294,16 @@ dialog p{margin:4px 0 18px;font-size:15px}
     input.setAttribute('aria-invalid', text ? 'true' : 'false');
     document.getElementById(input.id + '-err').textContent = text || '';
   }
-  [nameI, phoneI].forEach(function(i){ i.addEventListener('input', function(){ setErr(i, ''); }); });
+  [nameI].forEach(function(i){ i.addEventListener('input', function(){ setErr(i, ''); }); });
 
   form.addEventListener('submit', function(e){
     e.preventDefault();
     var ok = true;
     if (nameI.value.trim().length < 2) { setErr(nameI, 'הקלידו שם מלא'); ok = false; }
-    var digits = phoneI.value.replace(/\D/g, '');
-    if (!/^(0\d{8,9}|972\d{8,9})$/.test(digits)) { setErr(phoneI, 'הקלידו מספר טלפון תקין'); ok = false; }
     if (!ok) return;
 
     var text = 'היי מיכל, הגעתי מהאתר של Kinnect ואשמח שתחזרו אליי לגבי הדרכת הורים.\n\n'
       + 'שם: ' + nameI.value.trim() + '\n'
-      + 'טלפון: ' + phoneI.value.trim() + '\n'
       + 'מפגש מועדף: ' + document.getElementById('fpref').value;
     var url = 'https://wa.me/' + CONTACTS.michal.phone + '?text=' + encodeURIComponent(text);
     var win = window.open(url, '_blank');
